@@ -1,12 +1,12 @@
 import React from 'react'
 import { useSelector ,useDispatch} from 'react-redux'
-import{removeTodo} from '../features/todo/todoSlice'
+import{removeTodo,updateTodo} from '../features/todo/todoSlice'
  
 function Todo() {
   const todos= useSelector(state=>state.todos)
   const dispatch=useDispatch()
   return (
-  <> <div>Todos</div>
+  <> 
   <div className='flex justify-center'>
   <ul className="list-none w-1/4 h-24 ">
       {todos.map((todo) => (
@@ -14,11 +14,25 @@ function Todo() {
           className="mt-4 flex justify-between items-center bg-zinc-800 px-4 py-2 rounded"
           key={todo.id}
         >
+         
           <div className='text-yellow-700'>{todo.text}</div>
+          <div className='flex'>
+          <button
+  className="mx-5 bg-green-500 w-10 p-2 rounded-xl"
+  onClick={() => {
+    const newText = prompt("Edit your todo", todo.text);
+    if (newText) {
+      dispatch(updateTodo({ id: todo.id, text: newText }));
+    }
+  }}
+>
+  Edit
+</button>
           <button
            onClick={() => dispatch(removeTodo(todo.id))}
             className="text-white bg-red-500 border-0 py-1 px-4 focus:outline-none hover:bg-red-600 rounded text-md"
           >
+            
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -34,6 +48,7 @@ function Todo() {
               />
             </svg>
           </button>
+          </div>
         </li>
       ))}
     </ul>
